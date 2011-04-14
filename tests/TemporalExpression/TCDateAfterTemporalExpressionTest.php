@@ -10,10 +10,10 @@ class TCDateAfterTemporalExpressionTest extends PHPUnit_Framework_TestCase {
   protected $tomorrow;
 
   public function setUp() {
-    $this->expression = new TCDateAfterTemporalExpression(new TCDate());
-    $this->yesterday = new TCDate(new DateTime('yesterday'));
-    $this->today = new TCDate(new DateTime('today'));
-    $this->tomorrow = new TCDate(new DateTime('tomorrow'));
+    $this->expression = new TCDateAfterTemporalExpression(TCDate::getInstance());
+    $this->yesterday = TCDate::getInstance(new DateTime('yesterday'));
+    $this->today = TCDate::getInstance(new DateTime('today'));
+    $this->tomorrow = TCDate::getInstance(new DateTime('tomorrow'));
   }
 
   public function testDayBefore() {

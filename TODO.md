@@ -4,7 +4,7 @@ The following items have been identified as "todo" items:
 
 - Create better implementation of `TCDate::unixtojd()`
 
-- Refactor `TCDate` to 'flyweight'
+- Refactor `TCDate` to 'flyweight' (Completed, 14th April 2011)
 
 - Create iterator/collection for `ITCEvent`
 

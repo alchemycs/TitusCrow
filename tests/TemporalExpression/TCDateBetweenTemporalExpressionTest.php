@@ -7,16 +7,16 @@ class TCDateBetweenTemporalExpressionTest extends PHPUnit_Framework_TestCase {
   protected $expression;
 
   public function setUp() {
-    $this->expression = new TCDateBetweenTemporalExpression(new TCDate(new DateTime('yesterday')), new TCDate(new DateTime('tomorrow')));
+    $this->expression = new TCDateBetweenTemporalExpression(TCDate::getInstance(new DateTime('yesterday')), TCDate::getInstance(new DateTime('tomorrow')));
   }
 
   public function testOutOfRange() {
-    $this->assertFalse($this->expression->includes(new TCDate(new DateTime('2 days ago'))));
-    $this->assertFalse($this->expression->includes(new TCDate(new DateTime('+ 2 days'))));
+    $this->assertFalse($this->expression->includes(TCDate::getInstance(new DateTime('2 days ago'))));
+    $this->assertFalse($this->expression->includes(TCDate::getInstance(new DateTime('+ 2 days'))));
   }
 
   public function testInRange() {
-    $this->assertTrue($this->expression->includes(new TCDate()));
+    $this->assertTrue($this->expression->includes(TCDate::getInstance()));
   }
 
   public function testDateRetrieval() {
@@ -28,7 +28,7 @@ class TCDateBetweenTemporalExpressionTest extends PHPUnit_Framework_TestCase {
      @expectedException RangeException
    */
   public function testInvalidRange() {
-    $this->expression = new TCDateBetweenTemporalExpression(new TCDate(new DateTime('tomorrow')), new TCDate(new DateTime('yesterday')));
+    $this->expression = new TCDateBetweenTemporalExpression(TCDate::getInstance(new DateTime('tomorrow')), TCDate::getInstance(new DateTime('yesterday')));
   }
 
 }

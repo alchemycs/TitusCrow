@@ -6,9 +6,9 @@ class TCUnionTemporalExpressionTest extends PHPUnit_Framework_TestCase {
 
   public function testSingleExpression() {
     $expression = new TCUnionTemporalExpression();
-    $past = new TCDate('2 days ago');
-    $present = new TCDate('today');
-    $future = new TCDate('+2 days');
+    $past = TCDate::getInstance('2 days ago');
+    $present = TCDate::getInstance('today');
+    $future = TCDate::getInstance('+2 days');
     $expression->add(new TCDateEqualsTemporalExpression($present));
     $this->assertFalse($expression->includes($past));
     $this->assertFalse($expression->includes($future));
@@ -17,9 +17,9 @@ class TCUnionTemporalExpressionTest extends PHPUnit_Framework_TestCase {
 
   public function testTCoExpressions() {
     $expression = new TCUnionTemporalExpression();
-    $past = new TCDate('2 days ago');
-    $present = new TCDate('today');
-    $future = new TCDate('+2 days');
+    $past = TCDate::getInstance('2 days ago');
+    $present = TCDate::getInstance('today');
+    $future = TCDate::getInstance('+2 days');
     $expression->add(new TCDateEqualsTemporalExpression($past));
     $expression->add(new TCDateEqualsTemporalExpression($future));
     $this->assertTrue($expression->includes($past));
@@ -29,9 +29,9 @@ class TCUnionTemporalExpressionTest extends PHPUnit_Framework_TestCase {
 
   public function testClear() {
     $expression = new TCUnionTemporalExpression();
-    $past = new TCDate('2 days ago');
-    $present = new TCDate('today');
-    $future = new TCDate('+2 days');
+    $past = TCDate::getInstance('2 days ago');
+    $present = TCDate::getInstance('today');
+    $future = TCDate::getInstance('+2 days');
     $expression->add(new TCDateEqualsTemporalExpression($past));
     $expression->add(new TCDateEqualsTemporalExpression($future));
     $this->assertTrue($expression->includes($past));
@@ -45,9 +45,9 @@ class TCUnionTemporalExpressionTest extends PHPUnit_Framework_TestCase {
 
   public function testRemove() {
     $expression = new TCUnionTemporalExpression();
-    $past = new TCDate('2 days ago');
-    $present = new TCDate('today');
-    $future = new TCDate('+2 days');
+    $past = TCDate::getInstance('2 days ago');
+    $present = TCDate::getInstance('today');
+    $future = TCDate::getInstance('+2 days');
     $futureExpression = new TCDateEqualsTemporalExpression($future);
     $expression->add(new TCDateEqualsTemporalExpression($past));
     $expression->add($futureExpression);
