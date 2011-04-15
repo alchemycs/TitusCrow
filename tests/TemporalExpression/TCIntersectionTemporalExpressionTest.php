@@ -50,6 +50,55 @@ class TCIntersectionTemporalExpressionTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  public function testParameterConstructor() {
+    $past = TCDate::getInstance('yesterday');
+    $present = TCDate::getInstance('today');
+    $future = TCDate::getInstance('tomorrow');
+
+    $pastExpression = new TCDateBetweenTemporalExpression($past, $present);
+    $futureExpression = new TCDateBetweenTemporalExpression($present, $future);
+
+    $expression = new TCIntersectionTemporalExpression($pastExpression, $futureExpression);
+
+    $expression->add($pastExpression);
+    $expression->add($futureExpression);
+
+    $this->assertTrue($pastExpression->includes($past));
+    $this->assertTrue($pastExpression->includes($present));
+    $this->assertTrue($futureExpression->includes($present));
+    $this->assertTrue($futureExpression->includes($future));
+
+    $this->assertFalse($expression->includes($past));
+    $this->assertFalse($expression->includes($future));
+    $this->assertTrue($expression->includes($present));
+  }
+
+  public function testArrayConstructor() {
+    $past = TCDate::getInstance('yesterday');
+    $present = TCDate::getInstance('today');
+    $future = TCDate::getInstance('tomorrow');
+
+
+    $pastExpression = new TCDateBetweenTemporalExpression($past, $present);
+    $futureExpression = new TCDateBetweenTemporalExpression($present, $future);
+    $expressions = array($pastExpression, $futureExpression);
+
+    $expression = new TCIntersectionTemporalExpression($expressions);
+
+    $expression->add($pastExpression);
+    $expression->add($futureExpression);
+
+    $this->assertTrue($pastExpression->includes($past));
+    $this->assertTrue($pastExpression->includes($present));
+    $this->assertTrue($futureExpression->includes($present));
+    $this->assertTrue($futureExpression->includes($future));
+
+    $this->assertFalse($expression->includes($past));
+    $this->assertFalse($expression->includes($future));
+    $this->assertTrue($expression->includes($present));
+  }
+
+
   public function testClear() {
     $expression = new TCIntersectionTemporalExpression();
     $past = TCDate::getInstance('yesterday');

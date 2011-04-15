@@ -15,7 +15,7 @@ class TCUnionTemporalExpressionTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue($expression->includes($present));
   }
 
-  public function testTCoExpressions() {
+  public function testTwoExpressions() {
     $expression = new TCUnionTemporalExpression();
     $past = TCDate::getInstance('2 days ago');
     $present = TCDate::getInstance('today');
@@ -25,6 +25,28 @@ class TCUnionTemporalExpressionTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue($expression->includes($past));
     $this->assertTrue($expression->includes($future));
     $this->assertFalse($expression->includes($present));
+  }
+
+  public function testParameterConstructor() {
+      $expression = new TCUnionTemporalExpression(
+              new TCDateEqualsTemporalExpression(TCDate::getInstance('yesterday')),
+              new TCDateEqualsTemporalExpression(TCDate::getInstance('tomorrow'))
+      );
+      $this->assertTrue($expression->includes(TCDate::getInstance('yesterday')));
+      $this->assertTrue($expression->includes(TCDate::getInstance('tomorrow')));
+      $this->assertFalse($expression->includes(TCDate::getInstance('today')));
+  }
+
+  public function testArrayConstructor() {
+      $expressions = array(
+              new TCDateEqualsTemporalExpression(TCDate::getInstance('yesterday')),
+              new TCDateEqualsTemporalExpression(TCDate::getInstance('tomorrow'))
+      );
+      $expression = new TCUnionTemporalExpression($expressions);
+      $this->assertTrue($expression->includes(TCDate::getInstance('yesterday')));
+      $this->assertTrue($expression->includes(TCDate::getInstance('tomorrow')));
+      $this->assertFalse($expression->includes(TCDate::getInstance('today')));
+
   }
 
   public function testClear() {

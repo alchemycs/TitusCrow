@@ -13,10 +13,10 @@ The following items have been identified as "todo" items:
 - Refactor internal storage of `ITCScheduledEvent` in `TCSchedule`
 
 - Refactor `TCUnionTemporalExpression` constructor to accept multiple
-  `ITCTemporalExpression`s
+  `ITCTemporalExpression`s (Completed, 15th April 2011)
 
 - Refactor `TCIntersectionTemporalExpression` constructor to accept multiple
-  `ITCTemporalExpression`s
+  `ITCTemporalExpression`s (Completed, 15th April 2011)
 
 - Add `__toString()` to Temporal Expressions
 
@@ -28,7 +28,7 @@ The following items have been identified as "todo" items:
 
 - Create Temporal Expression for "...every nth year..." `TCRepeatingYearTemporalExpression`
 
-- Refactor test cases: general assertions should be `assert(expected, actual)`
+- Refactor test cases: assertions should be of the form `assert(expected, actual)`
   but we have mainly used `assert(actual, expected)`
 
 - Consider providing a _context_ for the temporal expressions. This will help
