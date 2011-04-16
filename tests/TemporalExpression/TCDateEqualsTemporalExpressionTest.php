@@ -5,9 +5,8 @@ require_once(dirname(__FILE__).'/../../src/TitusCrow.php');
 class TCDateEqualsTemporalExpressionTest extends PHPUnit_Framework_TestCase {
 
   public function testIncludes() {
-    $TCDateNow = new TCDate();
-    $TCDateNowAlso = clone $TCDateNow;
-    $this->assertNotSame($TCDateNow, $TCDateNowAlso);
+    $TCDateNow = TCDate::getInstance('28 August 1984');
+    $TCDateNowAlso = TCDate::getInstance('28 August 1984');
     $expression = new TCDateEqualsTemporalExpression($TCDateNow);
     $this->assertTrue($TCDateNow->equals($expression->getDate()));
     $this->assertTrue($expression->includes($TCDateNow));
@@ -15,8 +14,8 @@ class TCDateEqualsTemporalExpressionTest extends PHPUnit_Framework_TestCase {
   } 
 
   public function testNotIncludes() {
-    $TCDateNow = new TCDate();
-    $TCDateTomorrow = new TCDate(new DateTime('tomorrow'));
+    $TCDateNow = TCDate::getInstance();
+    $TCDateTomorrow = TCDate::getInstance(new DateTime('tomorrow'));
     $this->assertNotSame($TCDateNow, $TCDateTomorrow);
     $this->assertFalse($TCDateNow->equals($TCDateTomorrow));
     $expression = new TCDateEqualsTemporalExpression($TCDateNow);

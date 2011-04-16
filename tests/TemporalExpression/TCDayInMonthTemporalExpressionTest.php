@@ -8,7 +8,7 @@ class TCDayInMonthTemporalExpressionTest extends PHPUnit_Framework_TestCase {
    * @dataProvider providePositiveDayInMonth()
    */
   public function testPositiveDayInMonth($dateString, $dayOfWeek, $count) {
-    $date = new TCDate($dateString);
+    $date = TCDate::getInstance($dateString);
     $expression = new TCDayInMonthTemporalExpression($dayOfWeek, $count);
     $this->assertTrue($expression->includes($date));
     $expression = new TCDayInMonthTemporalExpression($dayOfWeek, ($count+1)%4+1);
@@ -35,7 +35,7 @@ class TCDayInMonthTemporalExpressionTest extends PHPUnit_Framework_TestCase {
    * @dataProvider provideNegativeDayInMonth
    */
   public function testNegativeDayInMonth($dateString, $dayOfWeek, $count) {
-    $date = new TCDate($dateString);
+    $date = TCDate::getInstance($dateString);
     $expression = new TCDayInMonthTemporalExpression($dayOfWeek, $count);
     $this->assertTrue($expression->includes($date));
     $expression = new TCDayInMonthTemporalExpression($dayOfWeek, $count+1);

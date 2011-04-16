@@ -51,33 +51,33 @@ class TCRangeEveryYearTemporalExpression implements ITCTemporalExpression {
    * @var int The month the range finishes on
    */
   protected $finishMonth;
-  /*
-   * @var int The day (date part) the range starts in the month
-   */
-  protected $startDay;
-  /*
-   * @var int The day (date part) the range end in the month
-   */
-  protected $finishDay;
 
   /**
-   * Creates the range this temporal expression evaluates.
+   * Construct the expression with the start and (optional) finish month of the year.
    *
-   * Note: there are 3 signatures for this constructor
+   * There are 2 signatures for this constructor:
+   *
+   * The first takes a single parameter that is the month to check if a date
+   * occurs in.
+   *
+   * The second takes two parameters where the first is the start month and the
+   * second is the end month. The expression will then check if a date occurs
+   * anytime between the two months.
+   *
+   * The range can be "wrapped" so that of a start month of November is given
+   * and an end month of February then any date in November, December, January
+   * and February will be valid for the expression.
    *
    * - A single month:
    * new TCRangeEveryYearTempralExpression(12); //Any day in December
    * - A month range:
    * new TCRangeEveryYearTempralExpression(3, 5); //Any day from the start of March to the end of May
-   * - A full range:
-   * new TCRangeEveryYearTempralExpression(3, 8, 15, 27); //Any day from 15th March to 27th August
+   * - A wrapped month range:
+   * new TCRangeEveryYearTemporalExpresion(11, 2); //Any day in Nov, Dec, Jan, Feb
    */
   public function __construct() {
     $initializer = null;
     switch (func_num_args()) {
-    case 4:
-      $initializer = 'initializeFullRange';
-      break;
     case 2:
       $initializer = 'initializeMonthRange';
       break;
@@ -85,30 +85,19 @@ class TCRangeEveryYearTemporalExpression implements ITCTemporalExpression {
       $initializer = 'initializeSingleMonth';
       break;
     default:
-      throw new InvalidArgumentException('Constructor accepts 1, 2 or 4 arguments');
+      throw new InvalidArgumentException('Constructor accepts 1 or 2 arguments');
     }
     call_user_func_array(array($this, $initializer), func_get_args());
-  }
-
-  private function initializeFullRange($aStartMonth, $aFinishMonth, $aStartDay, $aFinishDay) {
-    $this->startMonth = $aStartMonth;
-    $this->finishMonth = $aFinishMonth;
-    $this->startDay = $aStartDay;
-    $this->finishDay = $aFinishDay;
   }
 
   private function initializeMonthRange($aStartMonth, $aFinishMonth) {
     $this->startMonth = $aStartMonth;
     $this->finishMonth = $aFinishMonth;
-    $this->startDay = 0;
-    $this->finishDay = 0;
   }
 
   private function initializeSingleMonth($aMonth) {
     $this->startMonth = $aMonth;
     $this->finishMonth = $aMonth;
-    $this->startDay = 0;
-    $this->finishDay = 0;
   }
 
 
@@ -132,6 +121,8 @@ class TCRangeEveryYearTemporalExpression implements ITCTemporalExpression {
    * @return bool TRUE if the date occurs in the start month, FALSE otherwise
    */
   private function includesStartMonth(TCDate $aDate) {
+    return ($aDate->getMonthInYear()==$this->startMonth);
+
     if ($aDate->getMonthInYear() !== $this->startMonth) {
       return false;
     }
@@ -147,6 +138,8 @@ class TCRangeEveryYearTemporalExpression implements ITCTemporalExpression {
    * @return bool TRUE if the date occurs in the finish month, FALSE otherwise
    */
   private function includesFinishMonth(TCDate $aDate) {
+    return ($aDate->getMonthInYear()==$this->finishMonth);
+
     if ($aDate->getMonthInYear() != $this->finishMonth) {
       return false;
     }

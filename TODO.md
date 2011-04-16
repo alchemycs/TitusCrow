@@ -4,7 +4,7 @@ The following items have been identified as "todo" items:
 
 - Create better implementation of `TCDate::unixtojd()`
 
-- Refactor `TCDate` to 'flyweight'
+- Refactor `TCDate` to 'flyweight' (Completed, 14th April 2011)
 
 - Create iterator/collection for `ITCEvent`
 
@@ -13,12 +13,14 @@ The following items have been identified as "todo" items:
 - Refactor internal storage of `ITCScheduledEvent` in `TCSchedule`
 
 - Refactor `TCUnionTemporalExpression` constructor to accept multiple
-  `ITCTemporalExpression`s
+  `ITCTemporalExpression`s (Completed, 15th April 2011)
 
 - Refactor `TCIntersectionTemporalExpression` constructor to accept multiple
-  `ITCTemporalExpression`s
+  `ITCTemporalExpression`s (Completed, 15th April 2011)
 
 - Add `__toString()` to Temporal Expressions
+
+- Review and refactor Temporal Expressions to ensure they have getter methods
 
 - Create Temporal Expression for "...every nth day..." `TCRepeatingDayTemporalExpression`
 
@@ -28,8 +30,9 @@ The following items have been identified as "todo" items:
 
 - Create Temporal Expression for "...every nth year..." `TCRepeatingYearTemporalExpression`
 
-- Refactor test cases: general assertions should be `assert(expected, actual)`
+- Refactor test cases: assertions should be of the form `assert(expected, actual)`
   but we have mainly used `assert(actual, expected)`
+
 
 - Consider providing a _context_ for the temporal expressions. This will help
   in the future building a language parser. Also at the moment we get into an

@@ -9,7 +9,7 @@ class TCScheduledEventTest extends PHPUnit_Framework_TestCase {
     $wrongEvent = new TCSimpleEvent();
     $expression = new TCNeverTemporalExpression();
     $element = new TCScheduledEvent($rightEvent, $expression);
-    $date = new TCDate();
+    $date = TCDate::getInstance();
     $this->assertFalse($element->isOccuring($wrongEvent, $date));
   }
 
@@ -18,7 +18,7 @@ class TCScheduledEventTest extends PHPUnit_Framework_TestCase {
     $wrongEvent = new TCSimpleEvent();
     $expression = new TCAlwaysTemporalExpression();
     $element = new TCScheduledEvent($rightEvent, $expression);
-    $date = new TCDate();
+    $date = TCDate::getInstance();
     $this->assertFalse($element->isOccuring($wrongEvent, $date));
   }
 
@@ -26,7 +26,7 @@ class TCScheduledEventTest extends PHPUnit_Framework_TestCase {
     $rightEvent = new TCSimpleEvent();
     $expression = new TCNeverTemporalExpression();
     $element = new TCScheduledEvent($rightEvent, $expression);
-    $date = new TCDate();
+    $date = TCDate::getInstance();
     $this->assertFalse($element->isOccuring($rightEvent, $date));
   }
 
@@ -34,7 +34,7 @@ class TCScheduledEventTest extends PHPUnit_Framework_TestCase {
     $rightEvent = new TCSimpleEvent();
     $expression = new TCAlwaysTemporalExpression();
     $element = new TCScheduledEvent($rightEvent, $expression);
-    $date = new TCDate();
+    $date = TCDate::getInstance();
     $this->assertTrue($element->isOccuring($rightEvent, $date));
   }
 

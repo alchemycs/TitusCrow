@@ -31,6 +31,10 @@
 /**
  * TCDate is the primary class used by the TitusCrow library to represent dates.
  *
+ * TCDate is a flyweight, you must use TCDate::getInstance(). 
+ * 
+ * You can't clone it or use the new operator.
+ *
  * @package TitusCrow
  * @subpackage Date
  * @author  Michael McHugh <alchemist@alchemycs.net.au>
@@ -83,17 +87,54 @@ class TCDate {
   }
 
   /**
-   * Construct a representation of a date from a DateTime object or
-   * from a string.
+   * Holds the flyweight instances for created TCDate's
    *
-   * When a string is passed it is internally converted to a DateTime object.
+   * @var array
+   */
+  private static $instances = array();
+
+  /**
+   * Manages flyweight construction of a representation for a date from a
+   * DateTime object or from a string.
+   *
+   * When a string is passed it is internally converted to a DateTime object. If
+   * a null is passed it uses the current timestamp.
    *
    * For the purposes of this library we are only concerned with the day and
    * hence any time information passed into the constructor is not preserved.
    *
    * @param string|DateTime $aDate The date to create this representation.
    */
-  public function __construct($aDate = null) {
+  public static function getInstance($aDate = null) {
+    if (empty($aDate)) {
+      $aDate = new DateTime();
+    }
+    if (is_string($aDate)) {
+      $aDate = new DateTime($aDate);
+    } else if (!($aDate instanceof DateTime)) {
+      throw new InvalidArgumentException('Constructor parameter must be a date string or a DateTime object');
+    }
+    $julianday = unixtojd($aDate->getTimestamp());
+    if (!isset(self::$instances[$julianday])) {
+        self::$instances[$julianday] = new TCDate($aDate);
+    }
+    return self::$instances[$julianday];
+  }
+
+  /**
+   * Internal constructor used by TCDate::getInstance(). Construct a
+   * representation of a date from a DateTime object or from a string.
+   *
+   * When a string is passed it is internally converted to a DateTime object.
+   *
+   * For the purposes of this library we are only concerned with the day and
+   * hence any time information passed into the constructor is not preserved.
+   *
+   * The constructor has been made private because TCDate is a flyweight.
+   *
+   * @param string|DateTime $aDate The date to create this representation.
+   */
+  private function __construct($aDate = null) {
     if (empty($aDate)) {
       $aDate = new DateTime();
     }
@@ -154,7 +195,7 @@ class TCDate {
    * @see cal_from_jd
    * @return array Gregorian calendar information
    */
-  protected function toCalendar() {
+  public function toCalendar() {
     return cal_from_jd($this->julianday, CAL_GREGORIAN);
   }
 
@@ -265,6 +306,15 @@ class TCDate {
       }
       return 0;
     }
+  }
+
+  /**
+   * Since TCDate is a flyweight, we don't allow cloning.
+   *
+   * @throws Exception
+   */
+  public function __clone() {
+      throw new Exception("TCDate can not be cloned, it is a flyweight. Use TCDate::getInstance()");
   }
 
 }

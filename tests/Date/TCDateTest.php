@@ -17,74 +17,91 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testEmptyConstructor() {
-    $TCDate = new TCDate();
-    $dateTime = $TCDate->toDateTime();
-    $this->assertInstanceOf('DateTime', $dateTime);
+    $this->assertInstanceOf('TCDate', TCDate::getInstance());
   }
 
   public function testDateTimeConstructor() {
     $dateTime = new DateTime();
-    $TCDateTime = new TCDate($dateTime);
-    $this->assertInstanceOf('DateTime', $TCDateTime->toDateTime());
+    $date1 = TCDate::getInstance($dateTime);
+    $date2 = TCDate::getInstance($dateTime);
+    $this->assertInstanceOf('TCDate', $date1);
+    $this->assertInstanceOf('TCDate', $date2);
+    $this->assertSame($date1, $date2, "Objects should be the same because TCDate is a flyweight");
   }
 
   public function testStringConstructor() {
-    $date = new TCDate('last sunday February 2009');
-    $this->assertInstanceOf('TCDate', $date);
+
+    $date1 = TCDate::getInstance('last sunday February 2009');
+    $date2 = TCDate::getInstance('last sunday February 2009');
+    $date3 = TCDate::getInstance('first sunday February 2009');
+    $this->assertInstanceOf('TCDate', $date1);
+    $this->assertInstanceOf('TCDate', $date2);
+    $this->assertInstanceOf('TCDate', $date3);
+    $this->assertSame($date1, $date2, "Objects should be the same because TCDate is a flyweight");
+    $this->assertNotSame($date1, $date3);
+    $this->assertNotSame($date2, $date3);
+  }
+
+  /**
+   * @expectedException PHPUnit_Framework_Error
+   */
+  public function testNewConstructor() {
+      //$date = new TCDate();
+      $this->markTestIncomplete('Need to make sure this fails when using: new TCDate();');
   }
 
   /**
    * @expectedException InvalidArgumentException
    */
   public function testBadConstructorType() {
-    $date = new TCDate(array(1,2,3));
+    $date = TCDate::getInstance(array(1,2,3));
   }
 
   /**
    * @expectedException Exception
    */
   public function testBadConstructorString() {
-    $date = new TCDate('30 seconds after the big bang');
+    $date = TCDate::getInstance('30 seconds after the big bang');
   }
 
   public function testToDateTime() {
     //Test using an empty constrctor
-    $emptyDateConstructor = new TCDate();
+    $emptyDateConstructor = TCDate::getInstance();
     $this->assertInstanceOf('DateTime', $emptyDateConstructor->toDateTime());
 
     //Also test using a DateTime object in the constructor
     $newDateTime = new DateTime();
-    $dateTimeConstructor = new TCDate($newDateTime);
+    $dateTimeConstructor = TCDate::getInstance($newDateTime);
     $this->assertInstanceOf('DateTime', $dateTimeConstructor->toDateTime());
   }
 
   public function testToString() {
-    $TCDate = new TCDate();
+    $TCDate = TCDate::getInstance();
     $this->assertNotEmpty($TCDate->__toString());
     //die($TCDate);
   }
 
   public function testDateEquality() {
     $now = new DateTime();
-    $firstDate = new TCDate($now);
-    $secondDate = new TCDate($now);
+    $firstDate = TCDate::getInstance($now);
+    $secondDate = TCDate::getInstance($now);
     $this->assertEquals($firstDate, $secondDate);
-
-    // TODO : I think we actually want to turn unique dates into singletons..(or flyweights?)
-    //$this->assertSame($firstDate, $secondDate);
+    $this->assertTrue($firstDate==$secondDate);
+    $this->assertSame($firstDate, $secondDate);
   }
 
+  /**
+   * @expectedException Exception
+   */
   public function testDateCloning() {
-    $TCDate = new TCDate();
+    $TCDate = TCDate::getInstance();
     $clonedDate = clone $TCDate;
-    $this->assertEquals($TCDate, $clonedDate);
-    $this->assertNotSame($TCDate, $clonedDate);
   }
 
   public function testEquals() {
     $now = new DateTime();
-    $TCDate1 = new TCDate($now);
-    $TCDate2 = new TCDate($now);
+    $TCDate1 = TCDate::getInstance($now);
+    $TCDate2 = TCDate::getInstance($now);
     $this->assertTrue($TCDate1->equals($TCDate2));
     //Equality tests are symetrical
     $this->assertTrue($TCDate2->equals($TCDate1));
@@ -92,28 +109,27 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
 
   public function testNotEquals() {
     $now = new DateTime();
-    $TCDate1 = new TCDate(new DateTime('now'));
-    $TCDate2 = new TCDate(new DateTime('tomorrow'));
+    $TCDate1 = TCDate::getInstance(new DateTime('now'));
+    $TCDate2 = TCDate::getInstance(new DateTime('tomorrow'));
     $this->assertFalse($TCDate1->equals($TCDate2));
     //Equality tests are symetrical
     $this->assertFalse($TCDate2->equals($TCDate1));
   }
 
   public function testCompareTo() {
-    $now = new TCDate();
-    $alsoNow = new TCDate();
-    $tomorrow = new TCDate(new DateTime('tomorrow'));
+    $now = TCDate::getInstance();
+    $alsoNow = TCDate::getInstance();
+    $tomorrow = TCDate::getInstance(new DateTime('tomorrow'));
 
     $this->assertTrue($now->compareTo($tomorrow) === -1);
     $this->assertTrue($tomorrow->compareTo($now) === 1);
     $this->assertTrue($now->compareTo($alsoNow) === 0);
-
   }
 
   public function testComparitiveImplication() {
-    $yesterday = new TCDate(new DateTime('yesterday'));
-    $today = new TCDate(new DateTime('today'));
-    $tomorrow = new TCDate(new DateTime('tomorrow'));
+    $yesterday = TCDate::getInstance(new DateTime('yesterday'));
+    $today = TCDate::getInstance(new DateTime('today'));
+    $tomorrow = TCDate::getInstance(new DateTime('tomorrow'));
 
     $this->assertTrue($yesterday->compareTo($today) == -1);
     $this->assertTrue($today->compareTo($tomorrow) == -1);
@@ -123,14 +139,14 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
 
   public function testJulianDay() {
     $date = new DateTime();
-    $TCDate = new TCDate($date);
+    $TCDate = TCDate::getInstance($date);
     $julianDay = unixtojd($date->getTimestamp());
     $this->assertEquals($julianDay, $TCDate->toJulianDay());
   }
 
   public function testTimestamp() {
     $date = new DateTime();
-    $TCDate = new TCDate($date);
+    $TCDate = TCDate::getInstance($date);
     $timestamp = $date->getTimestamp(); 
     //Internally we normalize to a julian day so the timestamp will differ
     //We'll just make sure we are getting an integer back
@@ -141,7 +157,7 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
    * @dataProvider provideDaysOfWeek
    */
   public function testDayOfWeek($dateString, $dayOfWeek) {
-    $TCDate = new TCDate(new DateTime($dateString));
+    $TCDate = TCDate::getInstance(new DateTime($dateString));
     $this->assertEquals($TCDate->getDayOfWeek(), $dayOfWeek);
   }
 
@@ -164,7 +180,7 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
    * @dataProvider provideWeeksInMonth
    */
   public function testWeekInMonth($dateString, $week) {
-    $date = new TCDate(new DateTime($dateString));
+    $date = TCDate::getInstance(new DateTime($dateString));
     $this->assertEquals($date->getWeekInMonth(), $week);
   }
 
@@ -185,7 +201,7 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
    * @dataProvider provideDaysLeftInMonth
    */
   public function testGetDaysLeftInMonth($dateString, $daysLeft) {
-    $date = new TCDate(new DateTime($dateString));
+    $date = TCDate::getInstance(new DateTime($dateString));
     $this->assertEquals($date->getDaysLeftInMonth(), $daysLeft);
   }
 
@@ -203,12 +219,12 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testGetDayOfMonth() {
-    $date = new TCDate('23 may 1972');
+    $date = TCDate::getInstance('23 may 1972');
     $this->assertEquals($date->getDayInMonth(), 23);
   }
 
   public function testGetMonthOfYear() {
-    $date = new TCDate(new DateTime('23rd May 1972'));
+    $date = TCDate::getInstance(new DateTime('23rd May 1972'));
     $this->assertEquals($date->getMonthInYear(), 5);
   }
 

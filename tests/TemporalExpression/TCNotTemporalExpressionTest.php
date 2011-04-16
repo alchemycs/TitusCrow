@@ -5,7 +5,7 @@ require_once(dirname(__FILE__).'/../../src/TitusCrow.php');
 class TCNotTemporalExpressionTest extends PHPUnit_Framework_TestCase {
 
   public function testNotForAlways() {
-    $TCDate = new TCDate();
+    $TCDate = TCDate::getInstance();
     $alwaysExpression = new TCAlwaysTemporalExpression();
     $notAlwaysExpression = new TCNotTemporalExpression($alwaysExpression);
     $this->assertTrue($alwaysExpression->includes($TCDate));
@@ -13,7 +13,7 @@ class TCNotTemporalExpressionTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testNotForNever() {
-    $TCDate = new TCDate();
+    $TCDate = TCDate::getInstance();
     $neverExpression = new TCNeverTemporalExpression();
     $notNeverExpression = new TCNotTemporalExpression($neverExpression);
     $this->assertFalse($neverExpression->includes($TCDate));
