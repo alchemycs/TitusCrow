@@ -20,6 +20,8 @@ The following items have been identified as "todo" items:
 
 - Add `__toString()` to Temporal Expressions
 
+- Review and refactor Temporal Expressions to ensure they have getter methods
+
 - Create Temporal Expression for "...every nth day..." `TCRepeatingDayTemporalExpression`
 
 - Create Temporal Expression for "...every nth week..." `TCRepeatingWeekTemporalExpression`
@@ -30,6 +32,7 @@ The following items have been identified as "todo" items:
 
 - Refactor test cases: assertions should be of the form `assert(expected, actual)`
   but we have mainly used `assert(actual, expected)`
+
 
 - Consider providing a _context_ for the temporal expressions. This will help
   in the future building a language parser. Also at the moment we get into an
