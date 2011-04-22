@@ -12,11 +12,11 @@ class TCScheduleTest extends PHPUnit_Framework_TestCase {
     
     public function testNewEmptySchedule() {
         $this->assertInstanceOf('TCSchedule', $this->schedule);
-        $this->assertEquals($this->schedule->count(), 0);
+        $this->assertEquals(0, $this->schedule->count());
     }
 
     public function testCountableInterface() {
-        $this->assertEquals(count($this->schedule), 0);
+        $this->assertEquals(0, count($this->schedule));
     }
 
     public function testNonEmptyScheduleConstructor() {
@@ -29,14 +29,14 @@ class TCScheduleTest extends PHPUnit_Framework_TestCase {
 
     public function testAddEvent() {
         $event = new TCScheduledEvent(new TCSimpleEvent('First'), new TCAlwaysTemporalExpression());
-        $this->assertEquals(count($this->schedule), 0);
+        $this->assertEquals(0, count($this->schedule));
         $this->schedule->add($event);
-        $this->assertEquals(count($this->schedule), 1);
+        $this->assertEquals(1, count($this->schedule));
         $this->schedule->add($event);
-        $this->assertEquals(count($this->schedule), 1, 'Adding the same scheduled event should overwrite the previous one');
+        $this->assertEquals(1, count($this->schedule), 'Adding the same scheduled event should overwrite the previous one');
         $event2 = new TCScheduledEvent(new TCSimpleEvent('Second'), new TCAlwaysTemporalExpression());
         $this->schedule->add($event2);
-        $this->assertEquals(count($this->schedule), 2);
+        $this->assertEquals(2, count($this->schedule));
     }
 
     public function testClearEvents() {
@@ -45,22 +45,22 @@ class TCScheduleTest extends PHPUnit_Framework_TestCase {
         $this->schedule->add($event);
         $event2 = new TCScheduledEvent(new TCSimpleEvent('Second'), new TCAlwaysTemporalExpression());
         $this->schedule->add($event2);
-        $this->assertEquals(count($this->schedule), 2);
+        $this->assertEquals(2, count($this->schedule));
         $this->schedule->clear();
-        $this->assertEquals(count($this->schedule), 0);
+        $this->assertEquals(0, count($this->schedule));
     }
 
     public function testRemoveEvents() {
-        $this->assertEquals(count($this->schedule), 0);
+        $this->assertEquals(0, count($this->schedule));
         $event = new TCScheduledEvent(new TCSimpleEvent('First'), new TCAlwaysTemporalExpression());
         $this->schedule->add($event);
         $event2 = new TCScheduledEvent(new TCSimpleEvent('Second'), new TCAlwaysTemporalExpression());
         $this->schedule->add($event2);
-        $this->assertEquals(count($this->schedule), 2);
+        $this->assertEquals(2, count($this->schedule));
         $this->schedule->remove($event);
-        $this->assertEquals(count($this->schedule), 1);
+        $this->assertEquals(1, count($this->schedule));
         $this->schedule->remove($event2);
-        $this->assertEquals(count($this->schedule), 0);
+        $this->assertEquals(0, count($this->schedule));
     }
 
     public function testIsOccuring() {

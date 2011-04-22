@@ -158,7 +158,7 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
    */
   public function testDayOfWeek($dateString, $dayOfWeek) {
     $TCDate = TCDate::getInstance(new DateTime($dateString));
-    $this->assertEquals($TCDate->getDayOfWeek(), $dayOfWeek);
+    $this->assertEquals($dayOfWeek, $TCDate->getDayOfWeek());
   }
 
   public function provideDaysOfWeek() {
@@ -181,7 +181,7 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
    */
   public function testWeekInMonth($dateString, $week) {
     $date = TCDate::getInstance(new DateTime($dateString));
-    $this->assertEquals($date->getWeekInMonth(), $week);
+    $this->assertEquals($week, $date->getWeekInMonth());
   }
 
   public function provideWeeksInMonth() {
@@ -220,12 +220,12 @@ class TCDateTest extends PHPUnit_Framework_TestCase {
 
   public function testGetDayOfMonth() {
     $date = TCDate::getInstance('23 may 1972');
-    $this->assertEquals($date->getDayInMonth(), 23);
+    $this->assertEquals(23, $date->getDayInMonth());
   }
 
   public function testGetMonthOfYear() {
     $date = TCDate::getInstance(new DateTime('23rd May 1972'));
-    $this->assertEquals($date->getMonthInYear(), 5);
+    $this->assertEquals(5, $date->getMonthInYear());
   }
 
   public function testWithPreUnixEpochDates() {

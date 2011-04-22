@@ -7,16 +7,16 @@ class TCSimpleEventTest extends PHPUnit_Framework_TestCase {
   public function testEmptyConstructor() {
     $event = new TCSimpleEvent();
     $this->assertStringStartsWith('Unnamed Event: ', $event->getName());
-    $this->assertTrue($event->getName() === $event->__toString());
+    $this->assertEquals($event->__toString(), $event->getName());
   }
 
   public function testStringConstructor() {
     $eventName = "Sample Test Event Name";
     $event = new TCSimpleEvent($eventName);
-    $this->assertTrue($event->getName() === $eventName);
-    $this->assertTrue($event->__toString() === $eventName);
+    $this->assertEquals($eventName, $event->getName());
+    $this->assertEquals($eventName, $event->__toString());
     $newEvent = new TCSimpleEvent('New Event');
-    $this->assertEquals($newEvent->getName(), 'New Event');
+    $this->assertEquals('New Event', $newEvent->getName());
   }
 
   public function testEquals() {

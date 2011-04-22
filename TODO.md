@@ -31,8 +31,7 @@ The following items have been identified as "todo" items:
 - Create Temporal Expression for "...every nth year..." `TCRepeatingYearTemporalExpression`
 
 - Refactor test cases: assertions should be of the form `assert(expected, actual)`
-  but we have mainly used `assert(actual, expected)`
-
+  but we have mainly used `assert(actual, expected)` (Completed, 23rd April 2011)
 
 - Consider providing a _context_ for the temporal expressions. This will help
   in the future building a language parser. Also at the moment we get into an
