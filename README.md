@@ -11,7 +11,7 @@ decided it was time to bring this from abstract thought to concrete code.
 Date calculations are painful at the best of times, and the language
 of recurring events can be quite complicated. There are a range of
 special conditions with dates that are not logical but are simply
-cultural or political. Things like day light savings, public holidays 
+cultural or political. Things like day light savings, public holidays
 (federal, state, occupational, religious), seasons that are different depending
 on the hemisphere you live in etc all add to the complexity.
 
@@ -63,19 +63,19 @@ of other temporal expressions. These set expressions provide:
 ###Schedule
 This is the main class used to manage a schedule.
 
-Create a schedule object for the subject which can say which days an
-event occurs
+Create a schedule for the subject which can manage which days an
+event occurs.
 
-###Schedule Element
-Schedule Element is a map between an event and a temporal expression. Temporal
-expression has an individual instance method to determine if dates
+###Scheduled Event
+A Scheduled Event is a map between an event and a temporal expression. Temporal
+expressions have an individual instance method to determine if dates
 match.
 
 ###Temporal Expressions
-You need a way to express how when an event occurs.
+Define the mechanics of the recurring event by combining various Temporal Expressions
+as needed, or create your own for your unique requirements.
 
 ###Set Expressions
-You need to represent combinations of temporal expressions.
+Combine Temporal Expressions by using these specialised Temporal Expressions.
 
 Set combinations exist for union, intersection and difference.
-
