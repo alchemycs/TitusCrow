@@ -66,27 +66,27 @@ class TCScheduleTest extends PHPUnit_Framework_TestCase {
     public function testIsOccuring() {
         $event = new TCScheduledEvent(new TCSimpleEvent('First'), new TCAlwaysTemporalExpression());
         $this->schedule->add($event);
-        $event2 = new TCScheduledEvent(new TCSimpleEvent('Second'), new TCDateEqualsTemporalExpression(new TCDate('23rd March 2009')));
+        $event2 = new TCScheduledEvent(new TCSimpleEvent('Second'), new TCDateEqualsTemporalExpression(TCDate::getInstance('23rd March 2009')));
         $this->schedule->add($event2);
         $event3 = new TCScheduledEvent(new TCSimpleEvent('Non Existing'), new TCAlwaysTemporalExpression());
-        $this->assertTrue($this->schedule->isOccuring($event->getEvent(), new TCDate()));
-        $this->assertFalse($this->schedule->isOccuring($event3->getEvent(), new TCDate()));
-        $this->assertTrue($this->schedule->isOccuring($event2->getEvent(), new TCDate('23rd March 2009')));
-        $this->assertFalse($this->schedule->isOccuring($event2->getEvent(), new TCDate('24th March 2009')));
-        $this->assertTrue($this->schedule->isOccuring(new TCSimpleEvent('Second'), new TCDate('23rd March 2009')));
-        $this->assertFalse($this->schedule->isOccuring(new TCSimpleEvent('Second'), new TCDate('24th March 2009')));
+        $this->assertTrue($this->schedule->isOccuring($event->getEvent(), TCDate::getInstance()));
+        $this->assertFalse($this->schedule->isOccuring($event3->getEvent(), TCDate::getInstance()));
+        $this->assertTrue($this->schedule->isOccuring($event2->getEvent(), TCDate::getInstance('23rd March 2009')));
+        $this->assertFalse($this->schedule->isOccuring($event2->getEvent(), TCDate::getInstance('24th March 2009')));
+        $this->assertTrue($this->schedule->isOccuring(new TCSimpleEvent('Second'), TCDate::getInstance('23rd March 2009')));
+        $this->assertFalse($this->schedule->isOccuring(new TCSimpleEvent('Second'), TCDate::getInstance('24th March 2009')));
     }
 
     public function testEventsForDate() {
         $event = new TCScheduledEvent(new TCSimpleEvent('First'), new TCAlwaysTemporalExpression());
         $this->schedule->add($event);
-        $event2 = new TCScheduledEvent(new TCSimpleEvent('Second'), new TCDateEqualsTemporalExpression(new TCDate('23rd March 2009')));
+        $event2 = new TCScheduledEvent(new TCSimpleEvent('Second'), new TCDateEqualsTemporalExpression(TCDate::getInstance('23rd March 2009')));
         $this->schedule->add($event2);
 
-        $events = $this->schedule->eventsForDate(new TCDate('1st April 1980'));
+        $events = $this->schedule->eventsForDate(TCDate::getInstance('1st April 1980'));
         $this->assertEquals(1, count($events));
 
-        $events = $this->schedule->eventsForDate(new TCDate('23rd March 2009'));
+        $events = $this->schedule->eventsForDate(TCDate::getInstance('23rd March 2009'));
         $this->assertEquals(2, count($events));
         $this->assertNotSame($events[0], $events[1]);
     }
